@@ -8,12 +8,22 @@ document.addEventListener('DOMContentLoaded',function(){
         const cityName = document.getElementById("input_city").value;
         checkWeather(cityName);
     });
+
+    document.getElementById("input_city").addEventListener('keydown',function(e){
+        if(e.key === 'Enter'){
+        e.preventDefault();
+        const cityName = document.getElementById("input_city").value;
+        checkWeather(cityName);
+        }
+    });
     
     async function checkWeather(city){
 
         
         const response = await fetch(apiUrl + city + `&appid=${apiKey}`);
         const data = await response.json();
+
+        
 
         if(response.status == 404){
             document.querySelector('.error').style.display="block";
@@ -24,7 +34,7 @@ document.addEventListener('DOMContentLoaded',function(){
         document.querySelector('.error').style.display="none";
 
         document.querySelector('.city').innerHTML = data.name;
-        document.querySelector('.temp').innerHTML = (data.main.temp - 273.15).toFixed(2) + "°C";
+        document.querySelector('.temp').innerHTML = (data.main.temp - 273.15).toFixed(0) + "°C";
         document.querySelector('.humidity').innerHTML = data.main.humidity + "%";
         document.querySelector('.wind').innerHTML = data.wind.speed + " km/h";
 
